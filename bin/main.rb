@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'colorize'
 require_relative '../lib/checks'
 
@@ -19,12 +17,12 @@ rescue StandardError => e
 end
 content.length.times do |i|
   line = content[i]
-  if ch.trailing_spaces(line)
-    error_message << "line no.#{i} having trailing spaces at the end".colorize(:red)
-  end
+  error_message << "line no.#{i} having trailing spaces at the end".colorize(:red) if ch.trailing_spaces(line)
 end
 ch.check_indentation(content)
 ch.for_usage(content)
+ch.end_error(content)
+ch.empty_line(content)
 if error_message.empty?
   puts "#{'No offenses'.colorize(:green)} detected"
 else

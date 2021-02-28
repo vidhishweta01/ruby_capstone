@@ -1,30 +1,50 @@
-# frozen_string_literal: true
-
 # ReadLine is a class with a method which return every line of the file content
 class ReadLine
   def readline(content, index)
     content[index]
   end
 
+  def last_end(content)
+    arr = []
+    i = 0
+    content.length.times do |i|
+      arr << i if content[i].include?('end')
+    end
+    x = arr.length - 1
+    arr[x]
+  end
+
   def detect_keyword(line)
     state = false
-    array = ['do ', 'def ', 'unless ', 'elsif', 'if ', 'begin ', 'for ' 'end']
+    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ']
     array.each do |i|
-      if line.include?(i)
-        keyword = i
-        state = true
-        return [state, keyword]
-      end
+      next unless line.include?(i)
+
+      keyword = i
+      state = true
+      return [state, keyword]
     end
     [state]
+  end
+
+  def detect_end(content)
+    arr = []
+    i = 0
+    while i < content.length
+      arr << i if content[i].include?('end')
+      i += 1
+    end
+    arr.length
   end
 end
 
 # Checks contains the method for checking the error its child class of Readline
 class Checks < ReadLine
+  
   def initialize(array)
     @error = array
   end
+
   def trailing_spaces(line)
     state = false
     state = true if line.end_with?(' ')
@@ -50,14 +70,14 @@ class Checks < ReadLine
     keywords = j[1]
     keywords.length.times do |i|
       arr = keywords[i]
-      key = ['if','unless']
+      key = %w[if unless]
       key.each do |val|
-        if arr[0] == val
-          line = content[arr[1]]
-          k = line.index(val) - 1
-          res = (0..k).reject{|n| line[n] ==' '}
-          array << i if !res.empty?
-        end 
+        next unless arr[0] == val
+
+        line = content[arr[1]]
+        k = line.index(val) - 1
+        res = (0..k).reject { |n| line[n] == ' ' }
+        array << i unless res.empty?
       end
     end
     keyword = []
@@ -65,52 +85,73 @@ class Checks < ReadLine
       keyword << keywords[array[i]]
     end
     keywords -= keyword
-    keywords
+    keywords.length
   end
 
   def for_usage(content)
     content.length.times do |i|
-      line = content[i] 
-      if line.include?('for')
-        @error << "line:#{i+1} use each or times instead of for".colorize(:red)
-      end
+      line = content[i]
+      @error << "line:#{i + 1} use each or times instead of for".colorize(:red) if line.include?('for')
     end
   end
-  
-  def check_indentation(content)
-    msg = 'IndentationWidth: Use 2 spaces for indentation.'
-    cur_val = 0
-    indent_val = 0
-    arr = []
-    content.each_with_index do |str_val, indx|
-      strip_line = str_val.strip.split(' ')
-      exp_val = cur_val * 2
-      res_word = %w[class def if elsif until module unless begin case]
-  
-      next unless !str_val.strip.empty? || !strip_line.first.eql?('#')
-  
-      indent_val += 1 if res_word.include?(strip_line.first) || strip_line.include?('do')
-      indent_val -= 1 if str_val.strip == 'end'
-  
-      next if str_val.strip.empty?
-  
-      @error << indent_error(str_val, indx, exp_val, msg)
-      cur_val = indent_val
+
+  def end_error(content)
+    x = blocks(content)
+    y = detect_end(content)
+    @error << 'missing end tag'.colorize(:light_red) if x != y
+  end
+
+  def empty_line(con)
+    x = rem_emp_line_begin(con).length
+    v = con.length
+    y = v - x
+    @error << "empty lines #{y} at the begining".colorize(:light_red) if y.positive?
+  end
+
+  def check_indentation(cont)
+    reg = /\A\s{2}/
+    content = rem_emp_line_begin(cont)
+    a = last_end(cont)
+    x = cont.length - content.length
+    line1 = content[0]
+    line2 = content[1]
+    k = 1
+    bool = line1.match?(/\A[def]|..*\s[do]\s|[begin]|[if]...*/)
+    bool2 = line2.match?(/\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/) || line2.match?(/\A\s*[if]/) || line2.include?('end')
+    @error << 'line:1 is not properly indented expected no space at begining'.colorize(:light_red) unless bool
+    while k < content.length
+      unless line1.empty?
+        case line1
+        when /\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/, /\A\s*[if]/
+          reg = Regexp.union(reg, /\s{2}/)
+        when /..*[end]/
+          reg = Regexp.union(reg, /^[\s{2}]/)
+          @error << "line #{k + x} is not properly indented :: #{line1}".colorize(:light_red) unless line1.match?(reg)
+        end
+      end
+      if !line2.empty? && cont.index(line2) != a
+        @error << "line #{k + 1 + x} is not properly indented :: #{line2}".colorize(:light_red) unless line2.match?(reg)
+        line1 = line2 if bool2
+        line2 = content[k + 1].to_s
+      end
+      k += 1
     end
-    arr
+    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless content[a].match?(/\A\S[end]/)
   end
 
   private
 
-  def indent_error(str_val, indx, exp_val, msg)
-    strip_line = str_val.strip.split(' ')
-    emp = str_val.match(/^\s*\s*/)
-    end_chk = emp[0].size.eql?(exp_val.zero? ? 0 : exp_val - 2)
-  
-    if str_val.strip.eql?('end') || strip_line.first == 'elsif' || strip_line.first == 'when'
-      return("line:#{indx + 1} #{msg}".colorize(:red)) unless end_chk
-    elsif !emp[0].size.eql?(exp_val)
-      return("line:#{indx + 1} #{msg}".colorize(:red))
+  def rem_emp_line_begin(con)
+    i = 0
+    k = 0
+    arr = []
+    if con[0].empty?
+      while con[i].empty?
+        i += 1
+        k = i
+      end
     end
+    (k...con.length).each { |n| arr << con[n] }
+    arr
   end
 end
