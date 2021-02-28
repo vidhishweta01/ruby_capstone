@@ -3,14 +3,13 @@ class ReadLine
   def initialize(array)
     @error = array
   end
-  
+
   def readline(content, index)
     content[index]
   end
 
   def last_end(content)
     arr = []
-    i = 0
     content.length.times do |i|
       arr << i if content[i].include?('end')
     end
@@ -44,7 +43,6 @@ end
 
 # Checks contains the method for checking the error its child class of Readline
 class Checks < ReadLine
-
   def trailing_spaces(line)
     state = false
     state = true if line.end_with?(' ')
@@ -126,7 +124,7 @@ class Checks < ReadLine
           reg = Regexp.union(reg, /\s{2}/)
         when /..*[end]/
           reg = Regexp.union(reg, /^[\s{2}]/)
-          @error << "line #{k + x} is not properly indented :: #{line1}".colorize(:light_red) unless line1.match?(reg)
+          @error << "line #{k + x} is not properly indented :: #{line1}".colorize(:light_red) unless line1.match?(reg) # rubocop:disable Metrics/BlockNesting
         end
       end
       if !line2.empty? && cont.index(line2) != a
