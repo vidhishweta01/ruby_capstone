@@ -1,5 +1,9 @@
 # ReadLine is a class with a method which return every line of the file content
 class ReadLine
+  def initialize(array)
+    @error = array
+  end
+  
   def readline(content, index)
     content[index]
   end
@@ -40,10 +44,6 @@ end
 
 # Checks contains the method for checking the error its child class of Readline
 class Checks < ReadLine
-  
-  def initialize(array)
-    @error = array
-  end
 
   def trailing_spaces(line)
     state = false
