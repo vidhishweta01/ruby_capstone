@@ -25,23 +25,19 @@ $ cd <folder>
  
  ## Trailing Spaces
  
- ![Screenshot](./Screenshot2.png)
- 
+ ![Screenshot](Screenshot2.png)
  
  ## Missing Unexpeted end
  
- ![Screenshot](./Screenshot4.png)
- 
+ ![Screenshot](Screenshot4.png)
  
  ## Empty Line error
  
- ![Screenshot](./Screenshot5.png)
- 
+ ![Screenshot](Screenshot5.png)
  
  ## Indentation Error
  
- ![Screenshot](./Screenshot1.png)
-
+ ![Screenshot](Screenshot1.png)
 
 ## Built with
 
