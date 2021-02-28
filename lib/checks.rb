@@ -105,6 +105,9 @@ class Checks < ReadLine
     y = v - x
     @error << "empty lines #{y} at the begining".colorize(:light_red) if y.positive?
   end
+  # rubocop:disable Metrics/CyclomaticComplexity 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
 
   def check_indentation(cont)
     reg = /\A\s{2}/
@@ -115,7 +118,7 @@ class Checks < ReadLine
     line2 = content[1]
     k = 1
     bool = line1.match?(/\A[def]|..*\s[do]\s|[begin]|[if]...*/)
-    bool2 = line2.match?(/\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/) || line2.match?(/\A\s*[if]/) || line2.include?('end')
+    bool2 = line2.match?(/\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/) || line2.match?(/\A\s*[if]/) || line2.include?('end') # rubocop:disable Layout/LineLength
     @error << 'line:1 is not properly indented expected no space at begining'.colorize(:light_red) unless bool
     while k < content.length
       unless line1.empty?
@@ -137,11 +140,14 @@ class Checks < ReadLine
     @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless content[a].match?(/\A\S[end]/)
   end
 
+  # rubocop:enable Metrics/CyclomaticComplexity 
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
+
   private
 
   def rem_emp_line_begin(con)
-    i = 0
-    k = 0
+    k, i = 0
     arr = []
     if con[0].empty?
       while con[i].empty?
