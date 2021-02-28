@@ -4,10 +4,6 @@ class ReadLine
     @error = array
   end
 
-  def readline(content, index)
-    content[index]
-  end
-
   def last_end(content)
     arr = []
     content.length.times do |i|
@@ -19,7 +15,7 @@ class ReadLine
 
   def detect_keyword(line)
     state = false
-    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ']
+    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ','class ','module ']
     array.each do |i|
       next unless line.include?(i)
 
