@@ -15,7 +15,7 @@ class ReadLine
 
   def detect_keyword(line)
     state = false
-    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ','class ','module ']
+    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ', 'class ', 'module ']
     array.each do |i|
       next unless line.include?(i)
 

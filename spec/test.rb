@@ -2,7 +2,7 @@ require 'colorize'
 require_relative '../lib/checks'
 
 file = ['def my_count(var = nil)', '  c = 0', '  if block_given?', '    my_each { |i| c += 1 if yield(i) }',
-        '  elsif !var.nil?', '    if to_a.include? var', '      to_a.length.times do |i|', 
+        '  elsif !var.nil?', '    if to_a.include? var', '      to_a.length.times do |i|',
         '        c += 1 if to_a[i] == var', '      end', '    end', '    c', 'else', '    c = size', '  end',
         '  c', 'end']
 res = [7, [['def ', 0], ['if', 2], ['if', 3], ['if', 4], ['if', 5], ['do ', 6], ['if', 7]]]
@@ -11,7 +11,7 @@ line1 = 'def my_count(var = nil)'
 err = []
 ch = Checks.new(err)
 
-describe '#Checks' do
+describe '#Checks' do # rubocop:disable Metrics/BlockLength
   describe '#Checks.trailing_spaces' do
     it 'return true if any line has a trailing space or false' do
       line2 = '  if block_given? '
