@@ -105,7 +105,7 @@ class Checks < ReadLine
     y = v - x
     @error << "empty lines #{y} at the begining".colorize(:light_red) if y.positive?
   end
-  # rubocop:disable Metrics/CyclomaticComplexity 
+  # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/PerceivedComplexity
 
@@ -140,7 +140,7 @@ class Checks < ReadLine
     @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless content[a].match?(/\A\S[end]/)
   end
 
-  # rubocop:enable Metrics/CyclomaticComplexity 
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/PerceivedComplexity
 
