@@ -11,10 +11,6 @@ suggestion of good coding practices such as use of 'each', 'until' over 'for'
 proper indentation
 checks for empty lines at the beginning
 
-## Built with
-
-Ruby
-
 ## Getting Started
 
 To get a local copy of the repository please run the following commands on your terminal:
@@ -26,6 +22,10 @@ $ cd <folder>
  ## To check for errors on a file:
  
  $ bin/main filename.rb
+
+## Built with
+
+Ruby
 
 ## Authors ��
 
