@@ -1,43 +1,6 @@
-# ReadLine is a class with a method which return every line of the file content
-class ReadLine
-  def initialize(array)
-    @error = array
-  end
-
-  def last_end(content)
-    arr = []
-    content.length.times do |i|
-      arr << i if content[i].include?('end')
-    end
-    x = arr.length - 1
-    arr[x]
-  end
-
-  def detect_keyword(line)
-    state = false
-    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ', 'class ', 'module ']
-    array.each do |i|
-      next unless line.include?(i)
-
-      keyword = i
-      state = true
-      return [state, keyword]
-    end
-    [state]
-  end
-
-  def detect_end(content)
-    arr = []
-    i = 0
-    while i < content.length
-      arr << i if content[i].include?('end')
-      i += 1
-    end
-    arr.length
-  end
-end
-
 # Checks contains the method for checking the error its child class of Readline
+require_relative '../lib/ReadLine'
+
 class Checks < ReadLine
   def trailing_spaces(line)
     state = false
@@ -126,14 +89,14 @@ class Checks < ReadLine
           @error << "line #{k + x} is not properly indented :: #{line1}".colorize(:light_red) unless line1.match?(reg) # rubocop:disable Metrics/BlockNesting
         end
       end
-      if !line2.empty? && cont.index(line2) != a
+      if !line2.empty?
         @error << "line #{k + 1 + x} is not properly indented :: #{line2}".colorize(:light_red) unless line2.match?(reg)
         line1 = line2 if bool2
         line2 = content[k + 1].to_s
       end
       k += 1
     end
-    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless content[a].match?(/\A\S[end]/)
+    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless cont[a].match?(/\A\S[end]/)
   end
 
   # rubocop:enable Metrics/CyclomaticComplexity
@@ -142,16 +105,15 @@ class Checks < ReadLine
 
   private
 
-  def rem_emp_line_begin(con)
-    k, i = 0
+  def rem_emp_line_begin(content)
     arr = []
-    if con[0].empty?
-      while con[i].empty?
-        i += 1
-        k = i
+    j = 0
+    if content[0].empty?
+      while content[j].empty?
+        j += 1
       end
     end
-    (k...con.length).each { |n| arr << con[n] }
+    (j...content.length).each { |n| arr << content[n] }
     arr
   end
 end

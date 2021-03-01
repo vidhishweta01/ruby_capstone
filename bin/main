@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'colorize'
+require_relative '../lib/ReadLine'
 require_relative '../lib/checks'
 
 str = ARGV
@@ -19,7 +20,7 @@ rescue StandardError => e
 end
 content.length.times do |i|
   line = content[i]
-  error_message << "line no.#{i} having trailing spaces at the end".colorize(:red) if ch.trailing_spaces(line)
+  error_message << "line no.#{i + 1} having trailing spaces at the end".colorize(:red) if ch.trailing_spaces(line)
 end
 ch.check_indentation(content)
 ch.for_usage(content)

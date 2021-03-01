@@ -1,3 +1,4 @@
+
 def my_count(var = nil)
   c = 0
   if block_given?
