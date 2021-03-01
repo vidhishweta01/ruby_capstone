@@ -22,6 +22,11 @@ $ cd <folder>
  ## To check for errors on a file:
  
  $ bin/main filename.rb
+
+ ## To test the file:
+
+ run following command from the root folder:
+ $ rspec spec/test.rb 
  
  ## Trailing Spaces
  
