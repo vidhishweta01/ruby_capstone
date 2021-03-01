@@ -133,7 +133,7 @@ class Checks < ReadLine
       end
       k += 1
     end
-    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless content[a].match?(/\A\S[end]/)
+    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless cont[a].match?(/\A\S[end]/)
   end
 
   # rubocop:enable Metrics/CyclomaticComplexity
