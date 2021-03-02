@@ -15,21 +15,24 @@ checks for empty lines at the beginning
 
 To get a local copy of the repository please run the following commands on your terminal:
 
-$ cd <folder>
+$ cd folder-name
   
   $ git clone https://github.com/vidhishweta01/ruby-capstone.git
   
- ## To check for errors on a file:
+ ## To run this linter on a file:
  
- $ bin/main filename.rb
+ $ ./bin/main filename e.g. ./bin/main /lib/sample.rb
+ 
 
  ## To test the file:
 
  run following command from the root folder:
  $ rspec
 
- ## To download colorize :
+ ## To download dependecies :
+ 
  run following command on terminal:
+ 
  $ gem install colorize
  
  ## Trailing Spaces
