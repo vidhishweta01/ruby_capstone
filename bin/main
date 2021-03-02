@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'colorize'
+require_relative '../lib/read_line'
+require_relative '../lib/checks'
+require_relative '../lib/indent'
+
+str = ARGV
+k = str[0]
+error_message = []
+ch = Checks.new(error_message)
+ind = Indent.new(error_message)
+begin
+  if k.end_with?('.rb') || !k.include?('.')
+    f = File.open(str[0])
+    content = f.readlines.map(&:chomp) # content is an array of file lines
+  else
+    error_message << 'enter the file with extention .rb'.colorize(:light_red)
+  end
+rescue StandardError => e
+  error_message << "Check file name or path again\n".colorize(:light_red) + e.to_s.colorize(:red)
+end
+content.length.times do |i|
+  line = content[i]
+  error_message << "line no.#{i + 1} having trailing spaces at the end".colorize(:red) if ch.trailing_spaces(line)
+end
+ind.indentation_error(content)
+ch.for_usage(content)
+ch.end_error(content)
+ch.empty_line(content)
+if error_message.empty?
+  puts "#{'No offenses'.colorize(:green)} detected"
+else
+  puts error_message
+end
