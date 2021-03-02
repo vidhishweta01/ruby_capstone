@@ -1,7 +1,7 @@
 require 'colorize'
 require_relative '../lib/read_line'
 # Indent class checks indentation error
-class Indent < ReadLine
+class Indent < ReadLine # rubocop:disable Metrics/ClassLength
   def detect_key(line)
     state = false
     array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ', 'end']
@@ -28,6 +28,11 @@ class Indent < ReadLine
     [count, arr]
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+
   def blockss(content)
     j = count_key(content)
     array = []
@@ -52,18 +57,13 @@ class Indent < ReadLine
     keywords
   end
 
-  # rubocop:disable Metrics/PerceivedComplexity
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/AbcSize
-
   def indentation_error(content)
     a = indent(content)
     s = a[0]
     unless content[s[1]].index(/\S/) == s[0] - 2
       @error << "line #{s[1] + 1} is not properly indented::#{content[s[1]]}".colorize(:yellow)
     end
-    a.length.times do |i|
+    a.length.times do |i| # rubocop:disable Metrics/BlockLength
       x = a[i]
       if x[2] != 'end'
         h = x[1] + 1

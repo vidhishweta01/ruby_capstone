@@ -1,7 +1,7 @@
-# Checks contains the method for checking the error its child class of Readline
 require 'colorize'
 require_relative '../lib/read_line'
 
+# Checks contains the method for checking the error its child class of Readline
 class Checks < ReadLine
   def trailing_spaces(line)
     state = false
@@ -21,6 +21,9 @@ class Checks < ReadLine
     end
     [count, arr]
   end
+
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
 
   def blocks(content)
     j = count_keyword(content)
@@ -45,6 +48,8 @@ class Checks < ReadLine
     keywords -= keyword
     keywords.length
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def for_usage(content)
     content.length.times do |i|
