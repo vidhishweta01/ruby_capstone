@@ -13,6 +13,7 @@ checks for empty lines at the beginning
 
 ## Getting Started
 
+To install dependencies, add 'bundle install' 
 To clone the repository please run the following commands on your terminal:
 
 $ cd folder-name
@@ -28,12 +29,6 @@ $ cd folder-name
 
  run following command from the root folder:
  $ rspec
-
- ## To download dependecies :
- 
- run following command from root folder:
- 
- $ ./gem_file.txt
  
  ## Trailing Spaces
  
