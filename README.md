@@ -31,9 +31,9 @@ $ cd folder-name
 
  ## To download dependecies :
  
- run following command on terminal:
+ run following command from root folder:
  
- $ gem install colorize
+ $ ./gem_file.txt
  
  ## Trailing Spaces
  
