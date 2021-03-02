@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 # Checks contains the method for checking the error its child class of Readline
 require 'colorize'
-require_relative '../lib/ReadLine'
+require_relative '../lib/Read_Line'
 
 class Checks < ReadLine
   def trailing_spaces(line)

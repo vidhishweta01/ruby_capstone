@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'colorize'
-require_relative '../lib/ReadLine'
+require_relative '../lib/Read_Line'
 require_relative '../lib/checks'
 require_relative '../lib/indent'
 

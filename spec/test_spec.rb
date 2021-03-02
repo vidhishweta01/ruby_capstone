@@ -65,7 +65,7 @@ describe '#Indent' do
 
   describe '#Indent.indent' do
     it 'returns array of array, which contain number of spaces with the block closing and end line no.' do
-      expect(indent.indent(file)).to eql([[2, 0, 2], [4, 2, 5], [6, 5, 6], [8, 6, 8], [6, 8, 9], [4, 9, 13], [2, 13, 15]]) #rubocop:disable Layout/LineLength
+      expect(indent.indent(file)).to eql([[2, 0, 2], [4, 2, 5], [6, 5, 6], [8, 6, 8], [6, 8, 9], [4, 9, 13], [2, 13, 15]]) # rubocop:disable Layout/LineLength
     end
   end
 end
