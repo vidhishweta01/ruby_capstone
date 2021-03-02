@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 # Checks contains the method for checking the error its child class of Readline
+require 'colorize'
 require_relative '../lib/ReadLine'
 
 class Checks < ReadLine
@@ -62,57 +65,49 @@ class Checks < ReadLine
     x = rem_emp_line_begin(con).length
     v = con.length
     y = v - x
-    @error << "empty lines #{y} at the begining".colorize(:light_red) if y.positive?
+    @error << "#{y} empty lines at the begining".colorize(:light_red) if y.positive?
   end
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/PerceivedComplexity
 
-  def check_indentation(cont)
-    reg = /\A\s{2}/
-    content = rem_emp_line_begin(cont)
-    a = last_end(cont)
-    x = cont.length - content.length
-    line1 = content[0]
-    line2 = content[1]
-    k = 1
-    bool = line1.match?(/\A[def]|..*\s[do]\s|[begin]|[if]...*/)
-    bool2 = line2.match?(/\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/) || line2.match?(/\A\s*[if]/) || line2.include?('end') # rubocop:disable Layout/LineLength
-    @error << 'line:1 is not properly indented expected no space at begining'.colorize(:light_red) unless bool
-    while k < content.length
-      unless line1.empty?
-        case line1
-        when /\A\s*[def]|\A\s*[else]|\A\s*[elsif]|..*\s[do]\s|..*\s*[begin]...*/, /\A\s*[if]/
-          reg = Regexp.union(reg, /\s{2}/)
-        when /..*[end]/
-          reg = Regexp.union(reg, /^[\s{2}]/)
-          @error << "line #{k + x} is not properly indented :: #{line1}".colorize(:light_red) unless line1.match?(reg) # rubocop:disable Metrics/BlockNesting
-        end
-      end
-      if !line2.empty?
-        @error << "line #{k + 1 + x} is not properly indented :: #{line2}".colorize(:light_red) unless line2.match?(reg)
-        line1 = line2 if bool2
-        line2 = content[k + 1].to_s
-      end
-      k += 1
+  def last_end(content)
+    arr = []
+    g = 0
+    while g < content.length
+      arr << g if content[g].include?('end')
+      g += 1
     end
-    @error << "line #{a + 1} is not properly indented".colorize(:light_red) unless cont[a].match?(/\A\S[end]/)
+    x = arr.length
+    arr[x - 1]
   end
 
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/PerceivedComplexity
+  def detect_keyword(line)
+    state = false
+    array = ['do ', 'def ', 'unless ', 'if', 'begin ', 'for ', 'class ', 'module ']
+    array.each do |i|
+      next unless line.include?(i)
+
+      keyword = i
+      state = true
+      return [state, keyword]
+    end
+    [state]
+  end
+
+  def detect_end(content)
+    arr = []
+    i = 0
+    while i < content.length
+      arr << i if content[i].include?('end')
+      i += 1
+    end
+    arr.length
+  end
 
   private
 
   def rem_emp_line_begin(content)
     arr = []
     j = 0
-    if content[0].empty?
-      while content[j].empty?
-        j += 1
-      end
-    end
+    j += 1 while content[j].empty? if content[0].empty?
     (j...content.length).each { |n| arr << content[n] }
     arr
   end

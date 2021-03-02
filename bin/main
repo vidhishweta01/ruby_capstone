@@ -3,11 +3,13 @@
 require 'colorize'
 require_relative '../lib/ReadLine'
 require_relative '../lib/checks'
+require_relative '../lib/indent'
 
 str = ARGV
 k = str[0]
 error_message = []
 ch = Checks.new(error_message)
+ind = Indent.new(error_message)
 begin
   if k.end_with?('.rb') || !k.include?('.')
     f = File.open(str[0])
@@ -22,7 +24,7 @@ content.length.times do |i|
   line = content[i]
   error_message << "line no.#{i + 1} having trailing spaces at the end".colorize(:red) if ch.trailing_spaces(line)
 end
-ch.check_indentation(content)
+ind.indentation_error(content)
 ch.for_usage(content)
 ch.end_error(content)
 ch.empty_line(content)
