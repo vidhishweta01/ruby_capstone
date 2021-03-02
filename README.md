@@ -13,7 +13,7 @@ checks for empty lines at the beginning
 
 ## Getting Started
 
-To get a local copy of the repository please run the following commands on your terminal:
+To clone the repository please run the following commands on your terminal:
 
 $ cd folder-name
   
