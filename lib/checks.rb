@@ -22,9 +22,6 @@ class Checks < ReadLine
     [count, arr]
   end
 
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
-
   def blocks(content)
     j = count_keyword(content)
     array = []
@@ -48,8 +45,6 @@ class Checks < ReadLine
     keywords -= keyword
     keywords.length
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/AbcSize
 
   def for_usage(content)
     content.length.times do |i|
