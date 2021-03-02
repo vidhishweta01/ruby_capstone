@@ -1,5 +1,5 @@
 require 'colorize'
-require_relative '../lib/Read_Line'
+require_relative '../lib/read_line'
 # Indent class checks indentation error
 class Indent < ReadLine
   def detect_key(line)
