@@ -54,6 +54,11 @@ class Indent < ReadLine
     keywords
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/AbcSize
+
   def indentation_error(content)
     a = indent(content)
     s = a[0]
@@ -93,6 +98,10 @@ class Indent < ReadLine
     end
   end
 
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+
   def indent(content)
     a = blockss(content)
     arr = []
@@ -102,14 +111,16 @@ class Indent < ReadLine
       y = a[i + 1]
       if x[0] != 'end'
         space += 2
-        arr << [space, x[1], y[1]]
+        arr << [space, x[1], y[1]] # rubocop:disable Style/IdenticalConditionalBranches
       else
         space -= 2
-        arr << [space, x[1], y[1]]
+        arr << [space, x[1], y[1]] # rubocop:disable Style/IdenticalConditionalBranches
       end
     end
     arr
   end
+
+  # rubocop:enable Metrics/MethodLength
 
   def count_space(line)
     c = 0

@@ -26,7 +26,11 @@ $ cd <folder>
  ## To test the file:
 
  run following command from the root folder:
- $ rspec spec/test.rb 
+ $ rspec
+
+ ## To download colorize :
+ run following command on terminal:
+ $ gem install colorize
  
  ## Trailing Spaces
  

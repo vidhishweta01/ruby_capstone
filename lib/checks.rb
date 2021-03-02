@@ -107,7 +107,7 @@ class Checks < ReadLine
   def rem_emp_line_begin(content)
     arr = []
     j = 0
-    j += 1 while content[j].empty? if content[0].empty?
+    j += 1 while content[j].empty? if content[0].empty? # rubocop:disable Style/NestedModifier
     (j...content.length).each { |n| arr << content[n] }
     arr
   end
